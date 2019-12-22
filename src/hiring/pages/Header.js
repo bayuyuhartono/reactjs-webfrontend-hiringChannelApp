@@ -19,7 +19,7 @@ export class Header extends Component {
           Authorization: `Bearer ${Cookies.get('hiringToken')}`,
         },
       },
-      getUrl: `http://localhost:3030/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
+      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
       display: [],
       displayName: '',
       isLoading: false,

@@ -3,6 +3,7 @@ import {
   ListGroup, ListGroupItem, Card, Button,
 } from 'react-bootstrap'
 import NumberFormat from 'react-number-format'
+import Moment from 'react-moment'
 
 function ProfileEngineer(props) {
   return (
@@ -28,7 +29,7 @@ function ProfileEngineer(props) {
           <ListGroupItem>
                 Birth:
             {' '}
-            {props.list.dateOfBirth}
+            <Moment format="MMMM / DD / YYYY">{props.list.dateOfBirth}</Moment>
           </ListGroupItem>
           <ListGroupItem>
                 Age:

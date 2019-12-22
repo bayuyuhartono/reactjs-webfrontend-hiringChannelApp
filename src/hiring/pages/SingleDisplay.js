@@ -8,6 +8,8 @@ import NumberFormat from 'react-number-format'
 import Cookies from 'js-cookie'
 import ImageBox from '../components/ImageBox'
 import Header from './Header'
+import Moment from 'react-moment'
+import { WaveLoading } from 'react-loadingg'
 
 export default class SingleDisplay extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ export default class SingleDisplay extends Component {
           Authorization: `Bearer ${Cookies.get('hiringToken')}`,
         },
       },
-      getUrl: `http://localhost:3030/api/v1/engineer/${this.props.match.params.id}`,
+      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/engineer/${this.props.match.params.id}`,
       display: [],
       displayName: '',
       isLoading: false,
@@ -33,7 +35,11 @@ export default class SingleDisplay extends Component {
     axios.get(this.state.getUrl, this.state.config)
       .then((res) => {
         console.log(res.data)
-        this.setState({ display: res.data.data, isLoading: false })
+        this.setState({ display: res.data.data })
+        setTimeout(function() { //Start the timer
+            console.log(res.data)
+            this.setState({ isLoading:false })
+        }.bind(this), process.env.REACT_APP_LOADING_TIME)
       })
       .catch((err) => {
         console.log(err)
@@ -52,7 +58,7 @@ export default class SingleDisplay extends Component {
           </Link>
         </Container>
         <Container style={{ paddingTop: '15px' }}>
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <WaveLoading speed={1} size='large' color='#6c757d' />}
           {!isLoading && this.state.display.map((display) => (
             <Row>
               <Col xs={3}>
@@ -74,7 +80,12 @@ export default class SingleDisplay extends Component {
                     <Row>
                       <Col xs="2">Date Of Birth</Col>
                                         :
-                      <Col>{display.dateOfBirth}</Col>
+                      <Col><Moment format="MMMM / DD / YYYY">{display.dateOfBirth}</Moment></Col>
+                    </Row>
+                    <Row>
+                      <Col xs="2">Location</Col>
+                                        :
+                      <Col>{display.location}</Col>
                     </Row>
                     <Row>
                       <Col xs="2">Email</Col>

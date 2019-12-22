@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import Header from './Header'
 import Cookies from 'js-cookie'
 import '../css/Grid.css'
+import { WaveLoading } from 'react-loadingg'
 
 export class HomeScreen2 extends Component {
     constructor(){
@@ -37,11 +38,15 @@ export class HomeScreen2 extends Component {
     onSearch = e => {
         console.log(e.target.value)
         this.setState({ keyword: e.target.value, searchKey: e.target.value, isLoading: true})
-        let url = `http://localhost:3030/api/v1/company?searchBy=${this.state.searchBy}&keyword=${e.target.value}`
+        let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company?searchBy=${this.state.searchBy}&keyword=${e.target.value}`
         axios.get(url,this.state.config)
         .then(res => {
             console.log(res.data)
-            this.setState({pageInfo:res.data ,display: res.data.data, isLoading:false })
+            this.setState({pageInfo:res.data ,display: res.data.data })
+            setTimeout(function() { //Start the timer
+                console.log(res.data)
+                this.setState({ isLoading:false })
+            }.bind(this), process.env.REACT_APP_LOADING_TIME)
         })
         .catch(err => {
             console.log(err)
@@ -51,11 +56,15 @@ export class HomeScreen2 extends Component {
 
     componentDidMount() {
         this.setState({isLoading: true})
-        let url = `http://localhost:3030/api/v1/company`
+        let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company`
         axios.get(url,this.state.config)
         .then(res => {
             console.log(res.data)
-            this.setState({pageInfo:res.data ,display: res.data.data, isLoading:false })
+            this.setState({pageInfo:res.data ,display: res.data.data })
+            setTimeout(function() { //Start the timer
+                console.log(res.data)
+                this.setState({ isLoading:false })
+            }.bind(this), process.env.REACT_APP_LOADING_TIME)
         })
         .catch(err => {
             console.log(err)
@@ -81,7 +90,7 @@ export class HomeScreen2 extends Component {
             </Container>
             {!this.state.display && <Container style={{paddingTop:"15px"}}><NotFound keyword={this.state.keyword}/></Container>}
             <div className="containerGrid">
-                {isLoading && <p>Loading...</p>}
+                {isLoading && <WaveLoading speed={1} size='large' color='#6c757d' />}
                 {!isLoading && this.state.display && this.state.display.map(display => (
                     <CardImage2 list={display} />
                 ))}

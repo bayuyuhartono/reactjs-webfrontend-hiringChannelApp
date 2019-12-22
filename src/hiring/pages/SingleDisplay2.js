@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { WaveLoading } from 'react-loadingg'
 import Header from './Header'
 import ImageBox from '../components/ImageBox'
 
@@ -20,7 +21,7 @@ export default class SingleDisplay2 extends Component {
           Authorization: `Bearer ${Cookies.get('hiringToken')}`,
         },
       },
-      getUrl: `http://localhost:3030/api/v1/company/${this.props.match.params.id}`,
+      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/company/${this.props.match.params.id}`,
       display: [],
       displayName: '',
       isLoading: false,
@@ -32,7 +33,11 @@ export default class SingleDisplay2 extends Component {
     axios.get(this.state.getUrl, this.state.config)
       .then((res) => {
         console.log(res.data)
-        this.setState({ display: res.data.data, isLoading: false })
+        this.setState({ display: res.data.data })
+        setTimeout(function() { //Start the timer
+            console.log(res.data)
+            this.setState({ isLoading:false })
+        }.bind(this), process.env.REACT_APP_LOADING_TIME)
       })
       .catch((err) => {
         console.log(err)
@@ -51,7 +56,7 @@ export default class SingleDisplay2 extends Component {
           </Link>
         </Container>
         <Container style={{ paddingTop: '15px' }}>
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <WaveLoading speed={1} size='large' color='#6c757d' />}
           {!isLoading && this.state.display.map((display) => (
             <Row>
               <Col xs={3}>
@@ -64,6 +69,11 @@ export default class SingleDisplay2 extends Component {
                       <Col xs="2">Name</Col>
                                         :
                       <Col>{display.name}</Col>
+                    </Row>
+                    <Row>
+                      <Col xs="2">Location</Col>
+                                        :
+                      <Col>{display.location}</Col>
                     </Row>
                     <Row>
                       <Col xs="2">Email</Col>

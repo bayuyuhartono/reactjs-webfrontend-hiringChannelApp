@@ -19,7 +19,7 @@ export default class FormEditCompany extends Component {
           Authorization: `Bearer ${Cookies.get('hiringToken')}`,
         },
       },
-      getUrl: `http://localhost:3030/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
+      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
       display: [],
       displayName: '',
       isLoading: false,
@@ -72,7 +72,7 @@ export default class FormEditCompany extends Component {
       },
     }
     axios
-      .put(`http://localhost:3030/api/v1/company/${Cookies.get('hiringId')}`, formData, config)
+      .put(`${process.env.REACT_APP_SERVER_URL}/api/v1/company/${Cookies.get('hiringId')}`, formData, config)
       .then((response) => {
         if (response.data.error) {
           alert('All the form is required')
