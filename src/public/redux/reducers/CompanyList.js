@@ -1,24 +1,24 @@
 const initialState = {
-    engineers: [],
+    companys: [],
     isLoading: false,
     isError: false,
     isEmpty: false
 }
 
-const engineers = (state = initialState, action) => {    
+const companys = (state = initialState, action) => {    
     switch(action.type){
         // loading
-        case "FETCH_ENGINEERS_PENDING":
-        case "FETCH_SINGLE_ENGINEER_PENDING":
+        case "FETCH_COMPANYS_PENDING":
+        case "FETCH_SINGLE_COMPANY_PENDING":
             return {
                 ...state, // collect all previous state
                 isError: false,
                 isLoading: true,
             }
-        
-            // gagal
-        case "FETCH_ENGINEERS_REJECTED":
-        case "FETCH_SINGLE_ENGINEER_REJECTED":
+
+        // gagal
+        case "FETCH_COMPANYS_REJECTED":
+        case "FETCH_SINGLE_COMPANY_REJECTED":
             return {
                 ...state,
                 isLoading: false,
@@ -27,7 +27,7 @@ const engineers = (state = initialState, action) => {
             }
             
         // berhasil
-        case "FETCH_ENGINEERS_FULFILLED":
+        case "FETCH_COMPANYS_FULFILLED":
             console.log('masuk fulfilled');
             if (action.payload.data.data) {
                 return {
@@ -35,12 +35,8 @@ const engineers = (state = initialState, action) => {
                     isLoading: false,
                     isError: false,
                     isEmpty: false,
-                    // engineers: action.payload.data
-                    engineers: [...action.payload.data.data],
-                    total_page: [...action.payload.data.total_page],
-                    current_page: [...action.payload.data.current_page],
-                    prevPage: [action.payload.data.prevPage],
-                    nextPage: [action.payload.data.nextPage],
+                    // companys: action.payload.data
+                    companys: [...action.payload.data.data]
                 }
             } else {
                 return {
@@ -48,17 +44,13 @@ const engineers = (state = initialState, action) => {
                     isLoading: false,
                     isError: false,
                     isEmpty: true,
-                    // engineers: action.payload.data
-                    engineers: [],
-                    total_page: [],
-                    current_page: [],
-                    prevPage: [],
-                    nextPage: [],
+                    // companys: action.payload.data
+                    companys: [],
                     forbidden: true
                 }
             }
-
-            case "FETCH_SINGLE_ENGINEER_FULFILLED":
+            
+            case "FETCH_SINGLE_COMPANY_FULFILLED":
                 console.log('masuk fulfilled');
                 if (action.payload.data.data) {
                     return {
@@ -66,8 +58,8 @@ const engineers = (state = initialState, action) => {
                         isLoading: false,
                         isError: false,
                         isEmpty: false,
-                        // engineer: action.payload.data
-                        engineers: [...action.payload.data.data]
+                        // company: action.payload.data
+                        companys: [...action.payload.data.data]
                     }
                 } else {
                     return {
@@ -75,14 +67,13 @@ const engineers = (state = initialState, action) => {
                         isLoading: false,
                         isError: false,
                         isEmpty: true,
-                        // engineer: action.payload.data
-                        engineers: []
+                        // company: action.payload.data
+                        companys: []
                     }
                 }
-
         default:
             return state
     }
 }
 
-export default engineers
+export default companys

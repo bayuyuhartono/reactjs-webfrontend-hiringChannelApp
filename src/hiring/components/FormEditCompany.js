@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Cookies from 'js-cookie'
-import axios from 'axios'
 
-export default class FormEditCompany extends Component {
+import { connect } from 'react-redux'
+import { fetchProfile, updateAccount } from '../../public/redux/actions/Profile'
+
+class FormEditCompany extends Component {
   constructor(props) {
     super(props)
 
@@ -64,30 +66,9 @@ export default class FormEditCompany extends Component {
     formData.append('location', this.state.locationCompany)
     formData.append('description', this.state.descriptionCompany)
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-        email: Cookies.get('hiringEmail'),
-        Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-      },
-    }
-    axios
-      .put(`${process.env.REACT_APP_SERVER_URL}/api/v1/company/${Cookies.get('hiringId')}`, formData, config)
-      .then((response) => {
-        if (response.data.error) {
-          alert('All the form is required')
-        } else {
-          console.log(response)
-          this.props.history.push('/profil')
-          alert('Company Account successfully Updated')
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        this.setState({
-          errors: error,
-        })
-      })
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company/${Cookies.get('hiringId')}`
+
+    this.props.updateAccount(url,formData)
   }
 
   hasErrorFor(field) {
@@ -104,23 +85,22 @@ export default class FormEditCompany extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.propsData.profile.length) {
+      this.setState({
+        nameCompany: nextProps.propsData.profile[0].name,
+        locationCompany: nextProps.propsData.profile[0].location,
+        descriptionCompany: nextProps.propsData.profile[0].description,
+      })
+    }
+    if (nextProps.propsData.updated) {
+      alert('Account Has Been Updated')
+      this.props.history.push('/profil')   
+    }
+  }
+
   componentDidMount() {
-    this.setState({ isLoading: true })
-    axios.get(this.state.getUrl, this.state.config)
-      .then((res) => {
-        console.log(res.data)
-        this.setState({
-          display: res.data.data,
-          isLoading: false,
-          nameCompany: res.data.data[0].name,
-          locationCompany: res.data.data[0].location,
-          descriptionCompany: res.data.data[0].description,
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-        this.props.history.push('/register')
-      })
+    this.props.fetchProfile(this.state.getUrl)        
   }
 
   render() {
@@ -197,3 +177,15 @@ export default class FormEditCompany extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  propsData: state.profile,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: url => dispatch(fetchProfile(url)),
+  updateAccount: (url, formData) => dispatch(updateAccount(url,formData)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormEditCompany)
+

@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Cookies from 'js-cookie'
-import axios from 'axios'
 
-export default class FormEditEngineer extends Component {
+import { connect } from 'react-redux'
+import { fetchProfile, updateAccount } from '../../public/redux/actions/Profile'
+
+class FormEditEngineer extends Component {
   constructor(props) {
     super(props)
 
@@ -84,31 +86,9 @@ export default class FormEditEngineer extends Component {
     formData.append('age', this.state.age)
     formData.append('expectedSallary', this.state.expectedSallary)
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-        email: Cookies.get('hiringEmail'),
-        Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-      },
-    }
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/engineer/${Cookies.get('hiringId')}`
 
-    axios
-      .put(`${process.env.REACT_APP_SERVER_URL}/api/v1/engineer/${Cookies.get('hiringId')}`, formData, config)
-      .then((response) => {
-        if (response.data.error) {
-          alert('All the form is required')
-        } else {
-          console.log(response)
-          this.props.history.push('/profil')
-          alert('Engineer Account successfully Updated')
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        this.setState({
-          errors: error,
-        })
-      })
+    this.props.updateAccount(url,formData)
   }
 
   hasErrorFor(field) {
@@ -125,27 +105,26 @@ export default class FormEditEngineer extends Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({ isLoading: true })
-    axios.get(this.state.getUrl, this.state.config)
-      .then((res) => {
-        console.log(res.data)
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.propsData.profile.length) {
         this.setState({
-          display: res.data.data,
-          isLoading: false,
-          name: res.data.data[0].name,
-          location: res.data.data[0].location,
-          description: res.data.data[0].description,
-          skill: res.data.data[0].skill,
-          dateOfBirth: res.data.data[0].dateOfBirth,
-          age: res.data.data[0].age,
-          expectedSallary: res.data.data[0].expectedSallary,
+          name: nextProps.propsData.profile[0].name,
+          location: nextProps.propsData.profile[0].location,
+          description: nextProps.propsData.profile[0].description,
+          skill: nextProps.propsData.profile[0].skill,
+          dateOfBirth: nextProps.propsData.profile[0].dateOfBirth,
+          age: nextProps.propsData.profile[0].age,
+          expectedSallary: nextProps.propsData.profile[0].expectedSallary,
         })
-      })
-      .catch((err) => {
-        console.log(err)
-        this.props.history.push('/register')
-      })
+    }
+    if (nextProps.propsData.updated) {
+        alert('Account Has Been Updated')
+        this.props.history.push('/profil')   
+    }
+  }
+
+  componentDidMount() {
+    this.props.fetchProfile(this.state.getUrl)        
   }
 
   render() {
@@ -286,3 +265,14 @@ export default class FormEditEngineer extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  propsData: state.profile,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: url => dispatch(fetchProfile(url)),
+  updateAccount: (url, formData) => dispatch(updateAccount(url,formData)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormEditEngineer)

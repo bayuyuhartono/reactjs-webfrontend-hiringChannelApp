@@ -1,52 +1,30 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import {
   Container, Row, Col, Jumbotron, Button,
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { WaveLoading } from 'react-loadingg'
 import Header from './Header'
 import ImageBox from '../components/ImageBox'
 
-export default class SingleDisplay2 extends Component {
+import { connect } from 'react-redux'
+import { fetchCompanySingle } from '../../public/redux/actions/CompanyList'
+
+class SingleDisplay2 extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      config: {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          email: Cookies.get('hiringEmail'),
-          Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-        },
-      },
-      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/company/${this.props.match.params.id}`,
-      display: [],
-      displayName: '',
-      isLoading: false,
+      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/company/${this.props.match.params.id}`
     }
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true })
-    axios.get(this.state.getUrl, this.state.config)
-      .then((res) => {
-        console.log(res.data)
-        this.setState({ display: res.data.data })
-        setTimeout(function() { //Start the timer
-            console.log(res.data)
-            this.setState({ isLoading:false })
-        }.bind(this), process.env.REACT_APP_LOADING_TIME)
-      })
-      .catch((err) => {
-        console.log(err)
-        this.props.history.push('/register')
-      })
+    this.props.fetchCompanySingle(this.state.getUrl)
   }
 
   render() {
-    const { isLoading } = this.state
+    const { isLoading } = this.props.propsData
     return (
       <>
         <Header />
@@ -57,7 +35,7 @@ export default class SingleDisplay2 extends Component {
         </Container>
         <Container style={{ paddingTop: '15px' }}>
           {isLoading && <WaveLoading speed={1} size='large' color='#6c757d' />}
-          {!isLoading && this.state.display.map((display) => (
+          {!isLoading && this.props.propsData.companys.map((display) => (
             <Row>
               <Col xs={3}>
                 <ImageBox list={display.logo} />
@@ -95,3 +73,13 @@ export default class SingleDisplay2 extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  propsData: state.companys
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchCompanySingle: url => dispatch(fetchCompanySingle(url)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleDisplay2)

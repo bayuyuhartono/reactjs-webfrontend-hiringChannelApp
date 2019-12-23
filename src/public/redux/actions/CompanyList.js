@@ -9,12 +9,12 @@ const config = {
     }
   }
 
-export const fetchEngineers = (url) => ({
-    type: "FETCH_ENGINEERS",
+export const fetchCompanys = (url) => ({
+    type: "FETCH_COMPANYS",
     payload: axios.get(url, config)
 })
 
-export const fetchEngineerSingle = (url) => ({
-  type: "FETCH_SINGLE_ENGINEER",
+export const fetchCompanySingle = (url) => ({
+  type: "FETCH_SINGLE_COMPANY",
   payload: axios.get(url, config)
 })

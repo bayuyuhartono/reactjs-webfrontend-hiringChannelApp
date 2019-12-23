@@ -5,75 +5,38 @@ import CardImage2 from '../components/CardImage2'
 import NotFound from '../components/NotFound'
 import { Link } from 'react-router-dom'
 import Header from './Header'
-import Cookies from 'js-cookie'
 import '../css/Grid.css'
 import { WaveLoading } from 'react-loadingg'
+
+import { connect } from 'react-redux'
+import { fetchCompanys } from '../../public/redux/actions/CompanyList'
 
 export class HomeScreen2 extends Component {
     constructor(){
         super()
 
         this.state = {
-            config : {
-                headers: {
-                  "content-type": "application/x-www-form-urlencoded",
-                  "email":  Cookies.get('hiringEmail'),
-                  "Authorization": "Bearer " + Cookies.get('hiringToken')
-                }
-              },
-            pageInfo: [],
-            display: [],
-            displayName: '',
-            isLoading: false,
             keyword: '',
             searchBy: 'name',
-            searchKey: '',
-            sortBy: 'name',
-            order: 'ASC',
-            page: '1',
-            limit: '15'
+            searchKey: ''
         }
     }
 
     onSearch = e => {
         console.log(e.target.value)
-        this.setState({ keyword: e.target.value, searchKey: e.target.value, isLoading: true})
+        this.setState({ keyword: e.target.value, searchKey: e.target.value })
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company?searchBy=${this.state.searchBy}&keyword=${e.target.value}`
         axios.get(url,this.state.config)
-        .then(res => {
-            console.log(res.data)
-            this.setState({pageInfo:res.data ,display: res.data.data })
-            setTimeout(function() { //Start the timer
-                console.log(res.data)
-                this.setState({ isLoading:false })
-            }.bind(this), process.env.REACT_APP_LOADING_TIME)
-        })
-        .catch(err => {
-            console.log(err)
-            this.setState({ isLoading:false })
-        })
+        this.props.fetchCompanys(url) 
     }
 
     componentDidMount() {
-        this.setState({isLoading: true})
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company`
-        axios.get(url,this.state.config)
-        .then(res => {
-            console.log(res.data)
-            this.setState({pageInfo:res.data ,display: res.data.data })
-            setTimeout(function() { //Start the timer
-                console.log(res.data)
-                this.setState({ isLoading:false })
-            }.bind(this), process.env.REACT_APP_LOADING_TIME)
-        })
-        .catch(err => {
-            console.log(err)
-            this.props.history.push("/")
-        })
+        this.props.fetchCompanys(url) 
     }
 
     render() {        
-        const {isLoading} = this.state
+        const {isLoading} = this.props.propsData
         return (
             <>
             <Header onChangeValue={this.onSearch} keyword={this.state.keyword} />
@@ -88,10 +51,10 @@ export class HomeScreen2 extends Component {
                     </Col>
                 </Row>
             </Container>
-            {!this.state.display && <Container style={{paddingTop:"15px"}}><NotFound keyword={this.state.keyword}/></Container>}
+            {this.props.propsData.isEmpty && <Container style={{paddingTop:"15px"}}><NotFound keyword={this.state.keyword}/></Container>}
             <div className="containerGrid">
                 {isLoading && <WaveLoading speed={1} size='large' color='#6c757d' />}
-                {!isLoading && this.state.display && this.state.display.map(display => (
+                {!isLoading && this.props.propsData.companys && this.props.propsData.companys.map(display => (
                     <CardImage2 list={display} />
                 ))}
             </div>
@@ -100,4 +63,12 @@ export class HomeScreen2 extends Component {
     }
 }
 
-export default HomeScreen2
+const mapStateToProps = state => ({
+    propsData: state.companys
+})
+
+const mapDispatchToProps = dispatch => ({
+    fetchCompanys: url => dispatch(fetchCompanys(url)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen2)

@@ -47,16 +47,6 @@ class Register extends Component {
     this.handleFieldChaneFile = this.handleFieldChaneFile.bind(this)
   }
 
-  componentDidMount() {
-    if (Cookies.get('hiringId')) {
-      this.setState({ isLoading: true })
-      axios.get(this.state.getUrl, this.state.config)
-        .then((res) => {
-          this.props.history.push('/home')
-        })
-    }
-  }
-
   handleFieldChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -67,6 +57,16 @@ class Register extends Component {
     this.setState({
       [event.target.name]: event.target.files[0],
     })
+  }
+  
+  componentDidMount() {
+    if (Cookies.get('hiringId')) {
+      this.setState({ isLoading: true })
+      axios.get(this.state.getUrl, this.state.config)
+        .then((res) => {
+          this.props.history.push('/home')
+        })
+    }
   }
 
   handleLogin(event) {
@@ -92,7 +92,7 @@ class Register extends Component {
         Cookies.set('hiringId', response.data.data[0].id)
         Cookies.set('hiringWho', response.data.data[0].who)
         Cookies.set('hiringToken', response.data.data[0].token)
-        this.props.history.push('/home')
+        window.location.reload()
         alert('Login Success as Engineer')
       })
       .catch((error) => {
@@ -108,7 +108,7 @@ class Register extends Component {
               Cookies.set('hiringId', response.data.data[0].id)
               Cookies.set('hiringWho', response.data.data[0].who)
               Cookies.set('hiringToken', response.data.data[0].token)
-              this.props.history.push('/home')
+              window.location.reload()
               alert('Login Success as Company')
             }
           })
