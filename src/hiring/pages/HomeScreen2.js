@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import {Button,Container,Row,Col} from 'react-bootstrap'
 import CardImage2 from '../components/CardImage2'
 import NotFound from '../components/NotFound'
@@ -26,13 +25,18 @@ export class HomeScreen2 extends Component {
         console.log(e.target.value)
         this.setState({ keyword: e.target.value, searchKey: e.target.value })
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company?searchBy=${this.state.searchBy}&keyword=${e.target.value}`
-        axios.get(url,this.state.config)
         this.props.fetchCompanys(url) 
     }
 
     componentDidMount() {
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company`
         this.props.fetchCompanys(url) 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.propsData.isError) {
+            this.props.history.push('/register')
+        }
     }
 
     render() {        

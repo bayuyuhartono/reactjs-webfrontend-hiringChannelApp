@@ -61,7 +61,7 @@ export class HomeScreen extends Component {
         this.props.fetchEngineers(url)        
     }
 
-    onSearch = e => {
+    onSearch = (e) => {
         console.log(e.target.value)
         this.setState({ keyword: e.target.value, searchKey: e.target.value })
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/engineer?searchBy=${this.state.searchBy}&keyword=${e.target.value}&sortBy=${this.state.sortBy}&order=${this.state.order}&page=${this.state.page}&limit=${this.state.limit}`
@@ -71,9 +71,12 @@ export class HomeScreen extends Component {
     componentDidMount() {
         let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/engineer?searchBy=${this.state.searchBy}&keyword=${this.state.searchKey}&sortBy=${this.state.sortBy}&order=${this.state.order}&page=${this.state.page}&limit=${this.state.limit}`
         this.props.fetchEngineers(url) 
-        // if (this.props.propsData.result) {
-        //     this.props.history.push('/register')
-        // }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.propsData.isError) {
+            this.props.history.push('/register')
+        }
     }
 
     render() {        

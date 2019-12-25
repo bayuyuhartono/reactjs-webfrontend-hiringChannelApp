@@ -3,6 +3,11 @@ import React, { Component } from 'react'
 import Cookies from 'js-cookie'
 import { Tabs, Tab } from 'react-bootstrap'
 import HeaderAuth from './HeaderAuth'
+
+import { connect } from 'react-redux'
+import { addAccount } from '../../public/redux/actions/Register'
+import { fetchProfile } from '../../public/redux/actions/Profile'
+
 require('dotenv').config()
 class Register extends Component {
   constructor(props) {
@@ -34,8 +39,7 @@ class Register extends Component {
           email: Cookies.get('hiringEmail'),
           Authorization: `Bearer ${Cookies.get('hiringToken')}`,
         },
-      },
-      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
+      }
     }
 
     this.handleFieldChange = this.handleFieldChange.bind(this)
@@ -57,16 +61,6 @@ class Register extends Component {
     this.setState({
       [event.target.name]: event.target.files[0],
     })
-  }
-  
-  componentDidMount() {
-    if (Cookies.get('hiringId')) {
-      this.setState({ isLoading: true })
-      axios.get(this.state.getUrl, this.state.config)
-        .then((res) => {
-          this.props.history.push('/home')
-        })
-    }
   }
 
   handleLogin(event) {
@@ -97,10 +91,11 @@ class Register extends Component {
       })
       .catch((error) => {
         axios
-          .post('http://localhost:3030/api/v1/company/login', formDataLogin, config)
+          .post(`${process.env.REACT_APP_SERVER_URL}/api/v1/company/login`, formDataLogin, config)
           .then((response) => {
             if (response.data.error) {
               alert('email or password not match')
+              window.location.reload()
             } else {
               console.log(this.state.emailLogin)
               console.log(response.data.data[0])
@@ -117,6 +112,8 @@ class Register extends Component {
             this.setState({
               errors: error,
             })
+            window.location.reload()
+            alert('email or password not match')
           })
       })
   }
@@ -166,28 +163,8 @@ class Register extends Component {
     formData.append('age', this.state.age)
     formData.append('expectedSallary', this.state.expectedSallary)
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    }
-
-    axios
-      .post('http://localhost:3030/api/v1/engineer', formData, config)
-      .then((response) => {
-        if (response.data.error) {
-          alert('All the form is required')
-        } else {
-          console.log(response)
-          alert('Engineer Account successfully Created')
-          window.location.reload()
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          errors: error.response.data.errors,
-        })
-      })
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/engineer`
+    this.props.addAccount(url,formData) 
   }
 
   handleCreateCompany(event) {
@@ -219,28 +196,34 @@ class Register extends Component {
     formData.append('location', this.state.locationCompany)
     formData.append('description', this.state.descriptionCompany)
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    }
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/company`
+    this.props.addAccount(url,formData) 
+  }
 
-    axios
-      .post('http://localhost:3030/api/v1/company', formData, config)
-      .then((response) => {
-        if (response.data.error) {
-          alert('All the form is required')
-        } else {
-          console.log(response)
-          alert('Company Account successfully Created')
-          window.location.reload()
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          errors: error.response.data.errors,
-        })
-      })
+  componentDidMount() {
+    if (Cookies.get('hiringId')) {
+      this.setState({ isLoading: true })
+      const url = `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`
+      this.props.fetchProfile(url)  
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.propsData.added) {
+      window.location.reload()
+      alert('Account Has Been Created')
+    }
+    if (nextProps.propsData.message === 'email was taken') {
+      alert('Sorry, Email Was Taken')
+    }
+    if (!nextProps.propsDataCek.isError) {
+      this.props.history.push('/home')
+    } else {
+      Cookies.remove('hiringEmail')
+      Cookies.remove('hiringId')
+      Cookies.remove('hiringWho')
+      Cookies.remove('hiringToken')
+    }
   }
 
   hasErrorFor(field) {
@@ -590,4 +573,14 @@ class Register extends Component {
   }
 }
 
-export default Register
+const mapStateToProps = state => ({
+  propsDataCek: state.profile,
+  propsData: state.register
+})
+
+const mapDispatchToProps = dispatch => ({
+  addAccount: (url,formData) => dispatch(addAccount(url,formData)),
+  fetchProfile: (url,formData) => dispatch(fetchProfile(url,formData)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

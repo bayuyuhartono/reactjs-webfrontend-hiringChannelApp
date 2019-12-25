@@ -29,7 +29,7 @@ const engineers = (state = initialState, action) => {
         // berhasil
         case "FETCH_ENGINEERS_FULFILLED":
             console.log('masuk fulfilled');
-            if (action.payload.data.data) {
+            if (action.payload.data.message !== 'Not Found') {
                 return {
                     ...state,
                     isLoading: false,
@@ -53,8 +53,7 @@ const engineers = (state = initialState, action) => {
                     total_page: [],
                     current_page: [],
                     prevPage: [],
-                    nextPage: [],
-                    forbidden: true
+                    nextPage: []
                 }
             }
 

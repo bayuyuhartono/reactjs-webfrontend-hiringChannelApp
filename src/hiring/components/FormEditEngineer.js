@@ -18,14 +18,6 @@ class FormEditEngineer extends Component {
       description: '',
       showcase: null,
       errors: [],
-      config: {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          email: Cookies.get('hiringEmail'),
-          Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-        },
-      },
-      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
       display: [],
       displayName: '',
       isLoading: false,
@@ -67,9 +59,9 @@ class FormEditEngineer extends Component {
     if (!this.state.dateOfBirth) {
       return alert('Date Of Birth is required')
     }
-    if (!this.state.showcase) {
-      return alert('File is required')
-    }
+    // if (!this.state.showcase) {
+    //   return alert('File is required')
+    // }
     if (!this.state.age) {
       return alert('Age is required')
     }
@@ -121,10 +113,14 @@ class FormEditEngineer extends Component {
         alert('Account Has Been Updated')
         this.props.history.push('/profil')   
     }
+    if (nextProps.propsData.isError) {
+      this.props.history.push('/register')
+    }
   }
 
   componentDidMount() {
-    this.props.fetchProfile(this.state.getUrl)        
+      let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`
+      this.props.fetchProfile(url)        
   }
 
   render() {

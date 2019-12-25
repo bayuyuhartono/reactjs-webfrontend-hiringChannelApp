@@ -29,7 +29,7 @@ const companys = (state = initialState, action) => {
         // berhasil
         case "FETCH_COMPANYS_FULFILLED":
             console.log('masuk fulfilled');
-            if (action.payload.data.data) {
+            if (action.payload.data.message !== 'Not Found') {
                 return {
                     ...state,
                     isLoading: false,

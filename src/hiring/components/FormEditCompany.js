@@ -14,14 +14,6 @@ class FormEditCompany extends Component {
       descriptionCompany: '',
       logoCompany: null,
       errors: [],
-      config: {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          email: Cookies.get('hiringEmail'),
-          Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-        },
-      },
-      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
       display: [],
       displayName: '',
       isLoading: false,
@@ -51,9 +43,9 @@ class FormEditCompany extends Component {
     if (!this.state.nameCompany) {
       return alert('Name Company is required')
     }
-    if (!this.state.logoCompany) {
-      return alert('File is required')
-    }
+    // if (!this.state.logoCompany) {
+    //   return alert('File is required')
+    // }
     if (!this.state.locationCompany) {
       return alert('Location is required')
     }
@@ -97,10 +89,14 @@ class FormEditCompany extends Component {
       alert('Account Has Been Updated')
       this.props.history.push('/profil')   
     }
+    if (nextProps.propsData.isError) {
+      this.props.history.push('/register')
+    }
   }
 
   componentDidMount() {
-    this.props.fetchProfile(this.state.getUrl)        
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`
+    this.props.fetchProfile(url)        
   }
 
   render() {

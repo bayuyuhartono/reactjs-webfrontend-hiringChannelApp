@@ -4,11 +4,13 @@ import { combineReducers } from 'redux'
 import engineers from './EngineerList'
 import companys from './CompanyList'
 import profile from './Profile'
+import register from './Register'
 
 const rootReducer = combineReducers({
     engineers,
     companys,
-    profile
+    profile,
+    register
 })
 
 export default rootReducer

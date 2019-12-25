@@ -1,28 +1,21 @@
 import React, { Component } from 'react'
-import { Navbar, FormControl, Nav } from 'react-bootstrap'
-import axios from 'axios'
+import { Navbar, FormControl, Nav, Form, Col } from 'react-bootstrap'
 import Cookies from 'js-cookie'
 import logo from '../images/arkademy.svg'
 import chat from '../images/chat.png'
 import bell from '../images/bell.png'
 import exit from '../images/exit.png'
 
+import { connect } from 'react-redux'
+import { fetchProfile } from '../../public/redux/actions/Profile'
+
 export class Header extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      config: {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          email: Cookies.get('hiringEmail'),
-          Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-        },
-      },
-      getUrl: `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`,
       display: [],
       displayName: '',
-      isLoading: false,
     }
     this.logOut = this.logOut.bind(this)
   }
@@ -37,15 +30,18 @@ export class Header extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.propsData.profile.length) {
+        this.setState({ 
+          display: nextProps.propsData.profile, 
+          displayName: nextProps.propsData.profile[0].name
+      })
+    }
+  }
+
   componentDidMount() {
-    this.setState({ isLoading: true })
-    axios.get(this.state.getUrl, this.state.config)
-      .then((res) => {
-        this.setState({ display: res.data.data, displayName: res.data.data[0].name, isLoading: false })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    let url = `${process.env.REACT_APP_SERVER_URL}/api/v1/${Cookies.get('hiringWho')}/${Cookies.get('hiringId')}`
+    this.props.fetchProfile(url)  
   }
 
   render() {
@@ -61,23 +57,29 @@ export class Header extends Component {
               alt="React Bootstrap logo"
             />
           </Navbar.Brand>
-          <FormControl
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="basic-addon1"
-            style={{
-              width: '750px',
-              backgroundColor: 'lightgrey',
-              borderRadius: '10px',
-            }}
-            value={this.props.keyword}
-            onChange={this.props.onChangeValue}
-          />
-          <Nav>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+          <Col>
+          <Form inline>
+            <FormControl
+              className="mr-sm-2"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="basic-addon1"
+              style={{
+                width: '100%',
+                backgroundColor: 'lightgrey',
+                borderRadius: '10px',
+              }}
+              value={this.props.keyword}
+              onChange={this.props.onChangeValue}
+            />
+          </Form>
+          </Col>
+          <Nav className="mr-auto">
             <Nav.Link
               href="/home"
               style={{
-                marginLeft: '15px',
                 marginRight: '15px',
                 fontWeight: 'bolder',
                 color: 'black',
@@ -133,10 +135,19 @@ Home
               />
             </Nav.Link>
           </Nav>
+        </Navbar.Collapse>
         </Navbar>
       </>
     )
   }
 }
 
-export default Header
+const mapStateToProps = state => ({
+  propsData: state.profile,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: url => dispatch(fetchProfile(url)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
