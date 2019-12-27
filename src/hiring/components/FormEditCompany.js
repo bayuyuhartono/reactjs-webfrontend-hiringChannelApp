@@ -125,6 +125,7 @@ class FormEditCompany extends Component {
               style={{ backgroundColor: 'lightgray' }}
               id="logoCompany"
               type="file"
+              accept="image/x-png,image/gif,image/jpeg"
               className={`form-control ${
                 this.hasErrorFor('logoCompany') ? 'is-invalid' : null
               }`}

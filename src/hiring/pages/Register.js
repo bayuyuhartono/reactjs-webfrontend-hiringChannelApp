@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { addAccount } from '../../public/redux/actions/Register'
 import { fetchProfile } from '../../public/redux/actions/Profile'
 
-require('dotenv').config()
 class Register extends Component {
   constructor(props) {
     super(props)
@@ -31,15 +30,8 @@ class Register extends Component {
       name: '',
       description: '',
       showcase: null,
-      logoCompany: null,
-      errors: [],
-      config: {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          email: Cookies.get('hiringEmail'),
-          Authorization: `Bearer ${Cookies.get('hiringToken')}`,
-        },
-      }
+      logo: null,
+      errors: []
     }
 
     this.handleFieldChange = this.handleFieldChange.bind(this)
@@ -178,7 +170,7 @@ class Register extends Component {
     if (!this.state.nameCompany) {
       return alert('Name Company is required')
     }
-    if (!this.state.logoCompany) {
+    if (!this.state.logo) {
       return alert('File is required')
     }
     if (!this.state.locationCompany) {
@@ -192,7 +184,7 @@ class Register extends Component {
     formData.append('createEmail', this.state.emailCompany)
     formData.append('createPassword', this.state.passwordCompany)
     formData.append('name', this.state.nameCompany)
-    formData.append('logo', this.state.logoCompany)
+    formData.append('logo', this.state.logo)
     formData.append('location', this.state.locationCompany)
     formData.append('description', this.state.descriptionCompany)
 
@@ -347,19 +339,20 @@ class Register extends Component {
                         </div>
 
                           <div className="form-group">
-                          <label htmlFor="logoCompany">Logo</label>
+                          <label htmlFor="logo">Logo</label>
                           <input
                           style={{ backgroundColor: 'lightgray' }}
-                          id="logoCompany"
+                          id="logo"
                           type="file"
+                          
                           className={`form-control ${
-                            this.hasErrorFor('logoCompany') ? 'is-invalid' : null
+                            this.hasErrorFor('logo') ? 'is-invalid' : null
                           }`}
-                          name="logoCompany"
-                                // value={this.state.logoCompany}
+                          name="logo"
+                                // value={this.state.logo}
                           onChange={this.handleFieldChaneFile}
                         />
-                          {this.renderErrorFor('logoCompany')}
+                          {this.renderErrorFor('logo')}
                         </div>
 
                           <div className="form-group">
@@ -517,6 +510,7 @@ class Register extends Component {
                           style={{ backgroundColor: 'lightgray' }}
                           id="showcase"
                           type="file"
+                          
                           className={`form-control ${
                             this.hasErrorFor('showcase') ? 'is-invalid' : null
                           }`}

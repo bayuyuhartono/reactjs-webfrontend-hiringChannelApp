@@ -213,6 +213,7 @@ class FormEditEngineer extends Component {
               style={{ backgroundColor: 'lightgray' }}
               id="showcase"
               type="file"
+              accept="image/x-png,image/gif,image/jpeg"
               className={`form-control ${
                 this.hasErrorFor('showcase') ? 'is-invalid' : null
               }`}

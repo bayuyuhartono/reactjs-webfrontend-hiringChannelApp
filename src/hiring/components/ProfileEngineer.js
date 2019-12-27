@@ -13,7 +13,7 @@ function ProfileEngineer(props) {
         <Card style={{ width: '18rem' }}>
           <Card.Img
             style={{
-              borderRadius: '15px', objectFit: 'cover', objectPosition: 'top', maxHeight: '350px',
+              borderRadius: '15px', objectFit: 'cover', objectPosition: 'top', height: '350px',
             }}
             variant="top"
             src={props.list.showcase}

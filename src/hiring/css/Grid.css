@@ -9,6 +9,7 @@ body{background: #111;}
     width: 100%;
     margin-bottom: 1em;
     border-radius: 35px;
+    min-height: 175px;
 }
 
 @media(max-width: 800px){
