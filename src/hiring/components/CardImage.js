@@ -9,7 +9,7 @@ import NumberFormat from 'react-number-format'
 function CardImage(props) {
   return (
     <div className="containerImage">
-      <img src={props.list.showcase} className="imageGrid" alt="cardImage" />
+      <img src={process.env.REACT_APP_SERVER_URL + props.list.showcase} className="imageGrid" alt="cardImage" />
       <div className="overlay">
         <Container>
           <Row>

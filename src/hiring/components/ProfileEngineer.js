@@ -16,7 +16,7 @@ function ProfileEngineer(props) {
               borderRadius: '15px', objectFit: 'cover', objectPosition: 'top', height: '350px',
             }}
             variant="top"
-            src={props.list.showcase}
+            src={process.env.REACT_APP_SERVER_URL + props.list.showcase}
           />
         </Card>
         {props.editNeeded && <Button href={`/edit/${props.list.id}`} variant="primary" style={{width:"287px",marginTop:"10px",marginBottom:"10px"}}>Edit</Button>}

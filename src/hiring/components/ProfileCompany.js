@@ -14,7 +14,7 @@ function ProfileCompany(props) {
               borderRadius: '15px', objectFit: 'cover', objectPosition: 'top', height: '350px',
             }}
             variant="top"
-            src={props.list.logo}
+            src={process.env.REACT_APP_SERVER_URL + props.list.logo}
           />
         </Card>
         {props.editNeeded && <Button href={`/edit/${props.list.id}`} variant="primary" style={{width:"287px",marginTop:"10px",marginBottom:"10px"}}>Edit</Button>}

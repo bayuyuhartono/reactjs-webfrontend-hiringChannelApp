@@ -7,7 +7,7 @@ import IosMail from 'react-ionicons/lib/IosMail'
 function CardImage2(props) {
   return (
     <div className="containerImage">
-      <img src={props.list.logo} className="imageGrid" alt="cardImage2" />
+      <img src={process.env.REACT_APP_SERVER_URL + props.list.logo} className="imageGrid" alt="cardImage2" />
       <div className="overlay">
         <Container>
           <Row>
