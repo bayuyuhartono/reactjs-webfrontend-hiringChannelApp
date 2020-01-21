@@ -1,7 +1,6 @@
 
 
 # reactjs webfrontend hiringChannelApp
-[![Build Status](https://secure.travis-ci.org/flatiron/restful.png)](http://travis-ci.org/flatiron/restful)
 
 To install reactjs-webfrontend-hiringChannelApp, follow these steps:
 ## Installing
