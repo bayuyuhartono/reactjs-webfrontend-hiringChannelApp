@@ -55,7 +55,7 @@ class Profile extends Component {
             {!isLoading && this.props.propsData.profile.map((display) => (
               <ProfileEngineer list={display} title="My Profile - Engineer" editNeeded={true} />
             ))}
-            {!isLoading && <Button variant="danger" onClick={this.deleteAccount} style={{ width: '287px' }}>Delete This Account</Button>}
+            {!isLoading && <Button variant="danger" onClick={this.deleteAccount} style={{ width: '287px', marginTop: '-100px' }}>Delete This Account</Button>}
           </Container>
 
         </>
@@ -74,7 +74,7 @@ class Profile extends Component {
           {!isLoading && this.props.propsData.profile.map((display) => (
             <ProfileCompany list={display} title="My Profile - Company" editNeeded={true} />
           ))}
-          {!isLoading && <Button variant="danger" onClick={this.deleteAccount} style={{ width: '287px' }}>Delete This Account</Button>}
+          {!isLoading && <Button variant="danger" onClick={this.deleteAccount} style={{ width: '287px', marginTop: '-100px' }}>Delete This Account</Button>}
         </Container>
       </>
     )
