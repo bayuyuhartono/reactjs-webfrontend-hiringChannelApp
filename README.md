@@ -1,26 +1,40 @@
 
 
-# reactjs webfrontend hiringChannelApp
 
-To install reactjs-webfrontend-hiringChannelApp, follow these steps:
+# reactjs webfrontend hiringChannelApp
+Hiring Channel App is a feature that allows Engineers and Company to do communicate for looking/hiring jobs. This project for handle frontend only. Built using ReactJS Framework.
+
+## Requirements
+1. [Node.js](https://nodejs.org/en/)
+2. [Backend API]([https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp))
+3. [React.js]([https://reactjs.org/](https://reactjs.org/))
+4. Web Browser
+
 ## Installing
-clone from Github:
+To install reactjs-webfrontend-hiringChannelApp, follow these steps:
+1. clone from Github:
 ```
 $ git clone https://github.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp.git
 ```
-Move folder
+2. Move folder
 ```
 $ cd reactjs-webfrontend-hiringChannelApp
 ```
-install package
+3. install package
 ```
 $ yarn or npm install
 ```
-create .env file and fill these with required things
+4. create .env file and fill these with required things
 ```
-$ cp .env.example .env
+REACT_APP_SERVER_URL =
 ```
 run the server
 ```
 $ npm start
 ```
+5. Open browser and enter web url (ex. localhost:3000) and enjoy..
+
+## Screenshoot
+![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/auth.PNG)
+![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/home.PNG)
+![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/profile.PNG)
