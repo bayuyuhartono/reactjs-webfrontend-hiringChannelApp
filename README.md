@@ -35,6 +35,9 @@ $ npm start
 5. Open browser and enter web url (ex. localhost:3000) and enjoy..
 
 ## Screenshoot
-![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/auth.PNG)
-![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/home.PNG)
-![auth](https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/profile.PNG)
+
+<div align="center">
+    <img width="250" src="./public/auth.png">
+    <img width="250" src="./public/home.png">
+    <img width="250" src="./public/profile.png">
+</div>
