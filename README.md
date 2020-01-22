@@ -37,7 +37,7 @@ $ npm start
 ## Screenshoot
 
 <div align="center">
-    <img width="250" src="./public/auth.png">
-    <img width="250" src="./public/home.png">
-    <img width="250" src="./public/profile.png">
+    <img width="250" src="https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/auth.PNG">
+    <img width="250" src="https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/home.PNG">
+    <img width="250" src="https://raw.githubusercontent.com/bayuyuhartono/reactjs-webfrontend-hiringChannelApp/master/public/profile.PNG">
 </div>
