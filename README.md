@@ -6,7 +6,7 @@ Hiring Channel App is a feature that allows Engineers and Company to do communic
 
 ## Requirements
 1. [Node.js](https://nodejs.org/en/)
-2. [Backend API]([https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp))
+2. [Hiring Channel Backend API]([https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp))
 3. [React.js]([https://reactjs.org/](https://reactjs.org/))
 4. Web Browser
 
@@ -33,6 +33,9 @@ run the server
 $ npm start
 ```
 5. Open browser and enter web url (ex. localhost:3000) and enjoy..
+
+## Backend restfull API
+[Hiring Channel Backend API]([https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp))
 
 ## Screenshoot
 
