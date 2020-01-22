@@ -35,7 +35,7 @@ $ npm start
 5. Open browser and enter web url (ex. localhost:3000) and enjoy..
 
 ## Backend restfull API
-[Hiring Channel Backend API]([https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp))
+- [Hiring Channel Backend API](https://github.com/bayuyuhartono/expressjs-restful-hiringChannelApp)
 
 ## Screenshoot
 
